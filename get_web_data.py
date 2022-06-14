@@ -22,7 +22,7 @@ def get_web_data():
         # Multiple lines to write files if found in list
 
         # Write an .html file ff_web_file.html with the data read from the FL website
-        open('html_files/c4l_web_file.html', 'wb+').write(read_web_pagedata)
+        open('html_files/jpot_web_file.html', 'wb+').write(read_web_pagedata)
 
 
 if __name__ == '__main__':
