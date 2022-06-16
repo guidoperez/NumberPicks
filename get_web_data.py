@@ -1,4 +1,12 @@
 import urllib.request
+import ssl
+import imaplib
+
+#Adding SSL upgrade authentication handshake issue in python3.10
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.set_ciphers('DEFAULT')
+ctx.verify_mode = ssl.CERT_NONE
 
 
 def get_web_data():
@@ -15,7 +23,7 @@ def get_web_data():
 
     for game_file in games:
 
-        open_webpage = urllib.request.urlopen(game_file)
+        open_webpage = urllib.request.urlopen(game_file, context = ctx)
 
         read_web_pagedata = open_webpage.read()  # reads the_ .htm file
 
