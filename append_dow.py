@@ -7,7 +7,7 @@ import re
 def add_column_in_csv(input_file, output_file, transform_row):
     """ Append a column in existing csv using csv.reader / csv.writer classes
 
-    >>> add_column_in_csv('data_files/jpot_data_file.csv', 'data_files/jpot_output_file.csv', lambda row, line_num: row.append(get_day(row[0])))
+    add_column_in_csv('data_files/jpot_data_file.csv', 'data_files/jpot_output_file.csv', lambda row, line_num: row.append(get_day(row[0])))
 
     """
     # https://thispointer.com/python-add-a-column-to-an-existing-csv-file/
