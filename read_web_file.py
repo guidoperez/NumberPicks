@@ -4,14 +4,15 @@ import re  # import regular expression library
 """
     read all content from file ff_web_file.txt or .html
 
-    USE:
+    USE: execute after get_web_data.py
 
-    :parameter
+    :parameters
 """
 
-write_csv_file = open("/Users/guidoperez/Repositories/NumberPicks/data_files/jpot_data_file.csv", "w")
+#write_csv_file = open("/Users/guidoperez/Repositories/NumberPicks/data_files/jpot_data_file.csv", "w")
+write_csv_file = open("/Users/guidoperez/Repositories/NumberPicks/data_files/fantasy_five_data_file.csv", "w")
 
-with open('/Users/guidoperez/Repositories/NumberPicks/html_files/jpot_web_file.html', 'rt') as testFile:
+with open('/Users/guidoperez/Repositories/NumberPicks/html_files/fantasy_five.html', 'rt') as testFile:
     # r_date = re.compile(r'^*\d{1,2}/\d{1,2}/\d{2}.*')
     xtract_date = re.compile(r'(\d{1,2}/\d{1,2}/\d{1,2})')  # Regex to look for and extract the game date MM/DD/YY
     xtract_nums = re.compile(r'\">+(\d{1,2})+<')  # Regex to look for and extract each of the numbers played

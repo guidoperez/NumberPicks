@@ -1,3 +1,8 @@
+"""
+Execute first
+"""
+
+
 import urllib.request
 import ssl
 import imaplib
@@ -16,8 +21,20 @@ def get_web_data():
     cash_4_life = 'https://flalottery.com/exptkt/c4l.htm'
     jackpot = 'https://www.flalottery.com/exptkt/jtp.htm'
 
+    game_dict = {'fantasy_five':'https://www.flalottery.com/exptkt/ff.htm',
+                 'fl_lotto':'https://flalottery.com/exptkt/l6.htm',
+                 'cash_4_life':'https://flalottery.com/exptkt/c4l.htm',
+                 'jackpot':'https://www.flalottery.com/exptkt/jtp.htm'}
+
     # get all games in a list
-    games = [jackpot]
+    #games = [fantasy_five]
+    game_key = 'fantasy_five'
+    games = [game_dict[game_key]]
+
+    # Destination folder
+    dest_folder = 'html_files/'
+    dest_file_name = game_key
+    dest_file_path = dest_folder + dest_file_name + '.html'
 
     # web_url = fantasy_five_url
 
@@ -30,7 +47,8 @@ def get_web_data():
         # Multiple lines to write files if found in list
 
         # Write an .html file ff_web_file.html with the data read from the FL website
-        open('html_files/jpot_web_file.html', 'wb+').write(read_web_pagedata)
+        #open('html_files/jpot_web_file.html', 'wb+').write(read_web_pagedata)
+        open(dest_file_path, 'wb+').write(read_web_pagedata)
 
 
 if __name__ == '__main__':
