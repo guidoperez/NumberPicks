@@ -3,6 +3,7 @@ Execute first
 """
 
 import urllib.request
+import urllib.parse
 import ssl
 import sys
 import os
@@ -66,6 +67,69 @@ def get_web_data(game_key):
         print(f"Unexpected error: {e}")
 
 
+def download_pdf(pdf_url, dest_folder='pdf_files', filename=None):
+    """Download a PDF from `pdf_url` and save it to `dest_folder`.
+
+    Args:
+        pdf_url (str): Full URL to the PDF file.
+        dest_folder (str): Destination folder to save the PDF.
+        filename (str|None): Optional filename to use. If None, derived from URL.
+    """
+    if filename is None:
+        parsed = urllib.parse.urlparse(pdf_url)
+        filename = os.path.basename(parsed.path) or 'download.pdf'
+
+    dest_path = os.path.join(dest_folder, filename)
+
+    try:
+        os.makedirs(dest_folder, exist_ok=True)
+    except OSError as e:
+        print(f"Error creating directory '{dest_folder}': {e}")
+        return
+
+    try:
+        resp = urllib.request.urlopen(pdf_url, context=ctx)
+        with open(dest_path, 'wb') as out_f:
+            # Stream the response in chunks
+            while True:
+                chunk = resp.read(8192)
+                if not chunk:
+                    break
+                out_f.write(chunk)
+        print(f"Successfully downloaded PDF to {dest_path}")
+    except urllib.error.HTTPError as e:
+        print(f"HTTP Error {e.code} downloading '{pdf_url}': {e.reason}")
+    except urllib.error.URLError as e:
+        print(f"Error downloading URL '{pdf_url}': {e}")
+    except IOError as e:
+        print(f"Error writing to file '{dest_path}': {e}")
+    except Exception as e:
+        print(f"Unexpected error downloading PDF: {e}")
+
+
+def download_game_pdf(game_key, dest_folder='pdf_files'):
+    """Convenience wrapper to download the Cash4Life PDF from FL Lottery.
+
+    Args:
+        game_key (str): Key for the game (e.g., 'c4l', 'lotto', 'jackpot').
+        dest_folder (str): Folder where PDF will be saved (default 'pdf_files').
+    """
+
+    game_pdf_data = {
+        'c4l': 'https://files.floridalottery.com/exptkt/c4l.pdf',
+        'lotto': 'https://files.floridalottery.com/exptkt/l6.pdf',
+        'jackpot': 'https://files.floridalottery.com/exptkt/jtp.pdf'
+    }
+
+    # Validate game key
+    if game_key not in game_pdf_data:
+        print(f"Error: Invalid game key '{game_key}'")
+        print(f"Valid options: {', '.join(game_pdf_data.keys())}")
+        return    
+
+    download_pdf(game_pdf_data[game_key], dest_folder=dest_folder)
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Usage: python get_web_data.py <game_key>")
@@ -73,4 +137,9 @@ if __name__ == '__main__':
         sys.exit(1)
     
     lottery_game = sys.argv[1]
-    get_web_data(lottery_game)
+    #get_web_data(lottery_game)
+
+    try:
+        download_game_pdf(lottery_game, dest_folder='pdf_files')
+    except Exception as e:
+        print(f"Failed to download game PDFs: {e}")
